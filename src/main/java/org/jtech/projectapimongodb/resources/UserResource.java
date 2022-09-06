@@ -1,8 +1,11 @@
 package org.jtech.projectapimongodb.resources;
 
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.jtech.projectapimongodb.domain.User;
+import org.jtech.projectapimongodb.dto.UserDTO;
 import org.jtech.projectapimongodb.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +21,9 @@ public class UserResource {
     private UserService service;
     
     @GetMapping
-    public ResponseEntity<List<User>> findAll(){
+    public ResponseEntity<List<UserDTO>> findAll(){
         List<User> list = service.findAll();
-        return ResponseEntity.ok(list);
+        List<UserDTO> listDTO= list.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
+        return ResponseEntity.ok(listDTO);
     }
 }
