@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.jtech.projectapimongodb.domain.User;
 import org.jtech.projectapimongodb.repository.UserRepository;
+import org.jtech.projectapimongodb.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,5 +16,13 @@ public class UserService {
     
     public List<User> findAll(){
         return repo.findAll();
+    }
+    
+    public User findById(String id) {
+    	User user = repo.findById(id).orElse(null);
+    	if (user == null) {
+    		throw new ObjectNotFoundException("Objeto não encontrado");
+    	}
+    	return user;
     }
 }
